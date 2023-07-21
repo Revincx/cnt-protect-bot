@@ -4,5 +4,11 @@
             "source": "/(.*)",
             "destination": "/api/index"
         }
+    ],
+    "redirects": [
+        { 
+            "source": "/", 
+            "destination": "https://github.com/Revincx/cnt-protect-bot" 
+        }
     ]
 }
