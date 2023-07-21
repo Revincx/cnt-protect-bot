@@ -33,6 +33,19 @@ send_command
 
         if (params.length === 3) {
             target_chat = params[2]
+
+            const chat = await ctx.api.getChat(target_chat)
+
+            if(chat.type === 'private') return ctx.reply('目标聊天不能为私聊。')
+
+            if((chat.type === 'group' || chat.type === 'supergroup') ) {
+                if(ctx.message.chat.type == 'private') 
+                    return ctx.reply('暂时禁止在私聊中向群组中发送消息。如果需要，请直接在目标群组中使用 send 命令。')
+
+                if((ctx.message.chat.type === 'group' || ctx.message.chat.type === 'supergroup') && ctx.message.chat.id !== chat.id) 
+                    return ctx.reply('不允许在群组中想其他群组发送消息。')
+            }
+
             const is_admin = await isTargetChatAdmin(target_chat, ctx.message.from.id, ctx.api)
 
             if(!is_admin) return ctx.reply('您不是目标群组的管理员，无法发送消息。')
